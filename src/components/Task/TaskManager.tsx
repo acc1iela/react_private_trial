@@ -6,24 +6,31 @@ const TaskManager: React.FC = () => {
   const [newTask, setNewTask] = useState('');
   const { tasks, addTask, toggleTaskCompletion, deleteTask } = useTaskManager();
 
-  const handleAddTask = () => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTask(e.target.value);
+  };
+
+  const handleAddTask = (event: React.FormEvent) => {
+    event.preventDefault();
     addTask(newTask);
     setNewTask('');
   };
 
   return (
     <div>
-      <input type="text" value={newTask} onChange={(e) => setNewTask(e.target.value)} />
-      <button onClick={handleAddTask}>Add Task</button>
+      <form onSubmit={handleAddTask}>
+        <input type="text" value={newTask} onChange={handleChange} />
+        <button type="submit">Add Task</button>
+      </form>
       <ul>
-        {tasks.map((task, index) => (
+        {tasks.map((task) => (
           <Task
-            key={index}
+            key={task.id}
             task={task}
-            onToggle={() => toggleTaskCompletion(index)}
+            onToggle={() => toggleTaskCompletion(task.id)}
             onDelete={(e) => {
               e.stopPropagation();
-              deleteTask(index);
+              deleteTask(task.id);
             }}
           />
         ))}

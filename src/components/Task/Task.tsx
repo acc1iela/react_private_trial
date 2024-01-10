@@ -3,6 +3,7 @@ import React from 'react';
 type TaskProps = {
   task: {
     text: string;
+    id: number;
     completed: boolean;
   };
   onToggle: () => void;

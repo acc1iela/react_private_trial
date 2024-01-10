@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 type Task = {
+  id: number;
   text: string;
   completed: boolean;
 };
@@ -8,20 +9,25 @@ type Task = {
 const useTaskManager = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  const addTask = (newTask: string) => {
-    if (newTask) {
-      setTasks((prevTasks) => [...prevTasks, { text: newTask, completed: false }]);
+  const addTask = (newTaskText: string) => {
+    if (newTaskText) {
+      const newTask = {
+        id: tasks.length + 1,
+        text: newTaskText,
+        completed: false,
+      };
+      setTasks((prevTasks) => [...prevTasks, newTask]);
     }
   };
 
-  const toggleTaskCompletion = (index: number) => {
+  const toggleTaskCompletion = (taskId: number) => {
     setTasks((prevTasks) =>
-      prevTasks.map((task, i) => (i === index ? { ...task, completed: !task.completed } : task))
+      prevTasks.map((task) => (task.id === taskId ? { ...task, completed: !task.completed } : task))
     );
   };
 
-  const deleteTask = (index: number) => {
-    setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
+  const deleteTask = (taskId: number) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
   };
 
   return { tasks, addTask, toggleTaskCompletion, deleteTask };
