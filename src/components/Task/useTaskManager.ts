@@ -10,18 +10,18 @@ const useTaskManager = () => {
 
   const addTask = (newTask: string) => {
     if (newTask) {
-      setTasks([...tasks, { text: newTask, completed: false }]);
+      setTasks((prevTasks) => [...prevTasks, { text: newTask, completed: false }]);
     }
   };
 
   const toggleTaskCompletion = (index: number) => {
-    setTasks(
-      tasks.map((task, i) => (i === index ? { ...task, completed: !task.completed } : task))
+    setTasks((prevTasks) =>
+      prevTasks.map((task, i) => (i === index ? { ...task, completed: !task.completed } : task))
     );
   };
 
   const deleteTask = (index: number) => {
-    setTasks(tasks.filter((_, i) => i !== index));
+    setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
   };
 
   return { tasks, addTask, toggleTaskCompletion, deleteTask };
